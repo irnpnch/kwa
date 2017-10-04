@@ -11,10 +11,11 @@ import Location.*;
 public class LocationController {
 
     @RequestMapping(value = "/locations", method = RequestMethod.POST, headers = "Accept=application/json")
-    String addLocation(@RequestBody String locationData) {
+    public String addLocation(@RequestBody String lJson) {
 
         Gson g = new Gson();
-        Location location = g.fromJson(locationData, Location.class);
+        Location location = g.fromJson(lJson, Location.class);
+        location.recalcCenter();
         LocationDAO locationDAO = new LocationDAOImpl();
         locationDAO.addLocation(location);
         return g.toJson(location);
@@ -22,11 +23,13 @@ public class LocationController {
     }
 
     @RequestMapping(value = "/locations", method = RequestMethod.GET)
-    String getLocations() {
+    public String getLocation(String product_id, String store_id) {
 
+        Gson g = new Gson();
         LocationDAO locationDAO = new LocationDAOImpl();
-        return locationDAO.getAllLocations();
+        return g.toJson(locationDAO.getLocation(product_id, store_id));
 
     }
+
 
 }

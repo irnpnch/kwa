@@ -19,6 +19,8 @@
 
         <!-- Annotated entity classes -->
         <mapping class="Location.Location"/>
+        <mapping resource="location.hbm.xml"/>
 
     </session-factory>
-</hibernate-configuration>
+
+    </hibernate-configuration>

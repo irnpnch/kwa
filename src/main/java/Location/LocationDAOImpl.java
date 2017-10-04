@@ -2,16 +2,18 @@ package Location;
 
 
 import Application.ConnectionProvider;
-import com.google.gson.Gson;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public class LocationDAOImpl implements LocationDAO {
 
     @Override
     public boolean addLocation(Location location) {
+
+        location.recalcCenter();
         Transaction tx = ConnectionProvider.getSession().beginTransaction();
         ConnectionProvider.getSession().persist(location);
         tx.commit();
@@ -19,19 +21,20 @@ public class LocationDAOImpl implements LocationDAO {
     }
 
     @Override
-    public boolean setLocation(Location location) {
-        return false;
+    public Location getLocation(String product_id, String store_id)  {
+
+        if(product_id==null||store_id==null){
+            return null;
+        }
+
+        String queryString = "from Location where product_id='"+product_id+"' AND store_id='"+store_id+"'";
+        Query query = ConnectionProvider.getSession().createQuery(queryString);
+        try{
+            return (Location) query.getSingleResult();
+        }catch (NoResultException nre){
+            return null;
+        }
+
     }
 
-    @Override
-    public List getLocation(String ebus_id) {
-        Query query = ConnectionProvider.getSession().createQuery("from Location where ebus_id='"+ebus_id+"'");
-        return query.list();
-    }
-
-    @Override
-    public String getAllLocations() {
-        Query query = ConnectionProvider.getSession().createQuery("from Location");
-        return new Gson().toJson(query.list());
-    }
 }

@@ -10,7 +10,7 @@ public class MandateDAOImpl implements MandateDAO{
 
         for(Mandate.Position p : mandate.positions){
             LocationDAOImpl locationDAO = new LocationDAOImpl();
-            locationDAO.getLocation(p.ebus_id);
+            locationDAO.getLocation(p.product_id, mandate.store_id);
         }
         return mandate;
     }

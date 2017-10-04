@@ -11,12 +11,13 @@ public class Mandate {
     public Mandate(){
     }
 
-    List<Position>positions;
+    Position [] positions;
+    String store_id;
 
     public class Position {
 
-        @SerializedName("ebus_id")
-        String ebus_id;
+        @SerializedName("product_id")
+        String product_id;
         @SerializedName("position_id")
         String position_id;
         @SerializedName("sort_criterion")
